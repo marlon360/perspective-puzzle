@@ -10,12 +10,12 @@ public class GameManager : MonoBehaviour {
 
     public float threshold = 50;
 
-    private Camera mainCamera;
+    public Camera mainCamera;
+
     private int currentObstacleIndex = 0;
     private bool allObstaclesCompleted = false;
 
     void Start () {
-        this.mainCamera = Camera.main;
         player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
     }
 
