@@ -1,41 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ObstaclePoint : MonoBehaviour {
 
-    public Transform visibleObjectTransform;
     public Transform waitingTransform;
 
-    private Vector3 hiddenObjectFocusPoint;
-    private Vector3 visibleObjectFocusPoint;
+    public Transform obstacleStartPoint;
+    public Transform obstacleEndPoint;
 
-    private Vector3 obstacleDirection;
+    public Transform visibleStartPoint;
+    public Transform visibleEndPoint;
 
-    void Start () {
-        this.hiddenObjectFocusPoint = transform.position + new Vector3 (0, GetComponent<BoxCollider> ().bounds.extents.y, 0);
-        this.visibleObjectFocusPoint = this.visibleObjectTransform.position + new Vector3 (0, GetComponent<BoxCollider> ().bounds.extents.y, 0);
+    public int rightCameraPerspective (Camera cam) {
 
-        this.obstacleDirection = this.visibleObjectFocusPoint - this.hiddenObjectFocusPoint;
-        this.obstacleDirection = Vector3.Normalize (this.obstacleDirection);
-    }
+        if (this.isPointVisibleInViewport (this.visibleStartPoint.position, cam) &&
+            this.isPointVisibleInViewport (this.visibleEndPoint.position, cam) &&
+            this.IsPointNearerInViewport (this.visibleStartPoint.position, this.obstacleStartPoint.position, cam)) {
 
-    public float rightCameraPerspective (Transform camera) {
+            Vector2 obstacleStartViewport = PointToViewportCoordinates (this.obstacleStartPoint.position, cam);
+            Vector2 obstacleEndViewport = PointToViewportCoordinates (this.obstacleEndPoint.position, cam);
 
-        if (this.isPointVisibleInViewport (this.visibleObjectFocusPoint, Camera.main)) {
-            Vector3 cameraDirection = camera.position - this.visibleObjectFocusPoint;
-            cameraDirection = Vector3.Normalize (cameraDirection);
+            Vector2 visibleStartViewport = PointToViewportCoordinates (this.visibleStartPoint.position, cam);
+            Vector2 visibleEndViewport = PointToViewportCoordinates (this.visibleEndPoint.position, cam);
 
-            return Vector3.Dot (obstacleDirection, cameraDirection);
+            float startPointDistance = Vector2.Distance (
+                visibleStartViewport,
+                obstacleStartViewport
+            );
+
+            float endPointDistance = Vector2.Distance (
+                visibleEndViewport,
+                obstacleEndViewport
+            );
+
+            return (int) ((startPointDistance + endPointDistance) / 2 * 1000);
+
         } else {
-            return 0;
+            return 1000000;
         }
 
     }
 
+    private Vector2 PointToViewportCoordinates (Vector3 point, Camera cam) {
+        Vector3 viewPortPoint = cam.WorldToViewportPoint (point);
+        return new Vector2 (viewPortPoint.x, viewPortPoint.y);
+    }
+
     private bool isPointVisibleInViewport (Vector3 point, Camera cam) {
 
-        Vector3 viewportPoint = cam.WorldToViewportPoint (this.visibleObjectFocusPoint);
+        Vector3 viewportPoint = cam.WorldToViewportPoint (point);
 
         if (viewportPoint.z < 0) {
             return false;
@@ -50,6 +65,19 @@ public class ObstaclePoint : MonoBehaviour {
         }
 
         return true;
+
+    }
+
+    private bool IsPointNearerInViewport (Vector3 pointA, Vector3 pointB, Camera cam) {
+        Vector3 viewportPointA = cam.WorldToViewportPoint (pointA);
+        Vector3 viewportPointB = cam.WorldToViewportPoint (pointB);
+        return viewportPointA.z < viewportPointB.z;
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawLine(this.obstacleStartPoint.position, this.obstacleEndPoint.position);
+        Gizmos.DrawLine(this.obstacleStartPoint.position, this.visibleStartPoint.position);
+        Gizmos.DrawLine(this.obstacleEndPoint.position, this.visibleEndPoint.position);
 
     }
 

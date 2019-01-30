@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
     public MoveTo player;
     public Transform endGoal;
 
-    public float threshold = 0.00001f;
+    public float threshold = 50;
 
     private Camera mainCamera;
     private int currentObstacleIndex = 0;
@@ -22,11 +22,10 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (!allObstaclesCompleted) {
-            float correctness = points[currentObstacleIndex].rightCameraPerspective (mainCamera.transform);
+            int correctness = points[currentObstacleIndex].rightCameraPerspective (mainCamera);
 
-            if (correctness + this.threshold > 1) {
+            if (correctness < this.threshold) {
                 this.moveToNextObstacle ();
-                Debug.Log ("MOVE");
             }
         }
     }
