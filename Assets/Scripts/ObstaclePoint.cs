@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ObstaclePoint : MonoBehaviour {
-
-    public Transform waitingTransform;
+public class ObstaclePoint : WayPoint {
 
     public Transform obstacleStartPoint;
     public Transform obstacleEndPoint;
@@ -13,7 +11,13 @@ public class ObstaclePoint : MonoBehaviour {
     public Transform visibleStartPoint;
     public Transform visibleEndPoint;
 
-    public int rightCameraPerspective (Camera cam) {
+    private Camera cam;
+
+    void Start() {
+        this.cam = Camera.main;
+    }
+
+    public int rightCameraPerspective () {
 
         if (this.isPointVisibleInViewport (this.visibleStartPoint.position, cam) &&
             this.isPointVisibleInViewport (this.visibleEndPoint.position, cam) &&
@@ -38,7 +42,7 @@ public class ObstaclePoint : MonoBehaviour {
             return (int) ((startPointDistance + endPointDistance) / 2 * 1000);
 
         } else {
-            return 1000000;
+            return int.MaxValue;
         }
 
     }
@@ -74,7 +78,12 @@ public class ObstaclePoint : MonoBehaviour {
         return viewportPointA.z < viewportPointB.z;
     }
 
-    private void OnDrawGizmos() {
+    public override bool CanMoveTo() {
+        return this.rightCameraPerspective() < 20;
+    }
+
+    protected void OnDrawGizmos() {
+        base.OnDrawGizmos();
         Gizmos.DrawLine(this.obstacleStartPoint.position, this.obstacleEndPoint.position);
         Gizmos.DrawLine(this.obstacleStartPoint.position, this.visibleStartPoint.position);
         Gizmos.DrawLine(this.obstacleEndPoint.position, this.visibleEndPoint.position);

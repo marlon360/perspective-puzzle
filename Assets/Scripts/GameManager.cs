@@ -1,42 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour {
 
-    public ObstaclePoint[] points;
+    public WayPoint[] points;
     public MoveTo player;
-    public Transform endGoal;
 
     public float threshold = 50;
 
-    public Camera mainCamera;
-
-    private int currentObstacleIndex = 0;
+    private Queue<WayPoint> pointsQueue = new Queue<WayPoint>();
     private bool allObstaclesCompleted = false;
 
+    private WayPoint nextWayPoint;
+
     void Start () {
-        player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
+        foreach (WayPoint point in this.points) {
+            this.pointsQueue.Enqueue (point);
+        }
+        WayPoint currentWayPoint = pointsQueue.Dequeue ();
+        player.SetDestination (currentWayPoint.GetWayPoint ());
+        this.nextWayPoint = pointsQueue.Dequeue();
     }
 
     // Update is called once per frame
     void Update () {
         if (!allObstaclesCompleted) {
-            int correctness = points[currentObstacleIndex].rightCameraPerspective (mainCamera);
-
-            if (correctness < this.threshold) {
-                this.moveToNextObstacle ();
+            if (player.ReachedDestination ()) {
+                this.moveToNextWayPoint();
             }
+            //int correctness = points[currentObstacleIndex].rightCameraPerspective (mainCamera);
+
+            // if (correctness < this.threshold) {
+            //     this.moveToNextObstacle ();
+            // }
         }
     }
 
-    private void moveToNextObstacle () {
-        currentObstacleIndex++;
-        if (currentObstacleIndex < points.Length) {
-            player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
-        } else {
-            allObstaclesCompleted = true;
-            player.SetDestination (endGoal.position);
+    private void moveToNextWayPoint () {
+        if (this.nextWayPoint.CanMoveTo ()) {
+            player.SetDestination (nextWayPoint.GetWayPoint ());
+            this.nextWayPoint = this.pointsQueue.Dequeue ();
+            if(this.nextWayPoint == null) {
+                allObstaclesCompleted = true;
+            }
         }
     }
 

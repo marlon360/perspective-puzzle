@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
+using UnityEditor;
 
 public class PlaceObject : MonoBehaviour {
 
@@ -38,13 +39,20 @@ public class PlaceObject : MonoBehaviour {
             }
 
             if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
-                ObjectToPlace.transform.position = Marker.transform.position;
-                ObjectToPlace.transform.rotation = Marker.transform.rotation;
-                ObjectToPlace.SetActive(true);
-                Marker.SetActive (false);
-                IsObjectPlaced = true;
+                placeObjectAtMarker ();
             }
         }
 
     }
+
+    [ContextMenu("place")]
+    private void placeObjectAtMarker () {
+        ObjectToPlace.transform.position = Marker.transform.position;
+        ObjectToPlace.transform.position = new Vector3(ObjectToPlace.transform.position.x, ObjectToPlace.transform.position.y + 0.2f, ObjectToPlace.transform.position.z);
+        ObjectToPlace.transform.rotation = Marker.transform.rotation;
+        ObjectToPlace.SetActive (true);
+        Marker.SetActive (false);
+        IsObjectPlaced = true;
+    }
+
 }
