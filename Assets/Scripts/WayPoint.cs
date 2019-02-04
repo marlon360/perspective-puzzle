@@ -16,7 +16,7 @@ public class WayPoint : MonoBehaviour
         return true;
     }
 
-    protected void OnDrawGizmos() {
+    protected virtual void OnDrawGizmos() {
         Gizmos.DrawSphere(GetWayPoint(), 0.01f);
     }
 

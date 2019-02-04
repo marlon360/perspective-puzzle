@@ -82,7 +82,7 @@ public class ObstaclePoint : WayPoint {
         return this.rightCameraPerspective() < 20;
     }
 
-    protected void OnDrawGizmos() {
+    protected override void OnDrawGizmos() {
         base.OnDrawGizmos();
         Gizmos.DrawLine(this.obstacleStartPoint.position, this.obstacleEndPoint.position);
         Gizmos.DrawLine(this.obstacleStartPoint.position, this.visibleStartPoint.position);
