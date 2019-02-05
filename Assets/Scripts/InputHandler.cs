@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class InputHandler : MonoBehaviour {
+
+    public ARSessionOrigin SessionOrigin;
 
     public float rotationSensitivity = 0.4f;
     public float translationSensitivity = 0.001f;
@@ -61,14 +64,12 @@ public class InputHandler : MonoBehaviour {
 
             // apply rotation
             rotation.y = -offset.x * rotationSensitivity;
+            SessionOrigin.transform.Rotate(rotation);
 
             // apply translation
             translation.y = offset.y * translationSensitivity;
 
-            // rotate
-            transform.Rotate (rotation);
-            // translate
-            transform.Translate (translation);
+            SessionOrigin.MakeContentAppearAt(transform, translation);
 
         }
     }

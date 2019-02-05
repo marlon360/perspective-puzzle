@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
-using UnityEditor;
 
+[RequireComponent (typeof (ARSessionOrigin))]
 public class PlaceObject : MonoBehaviour {
 
     public GameObject Marker;
-    public ARSessionOrigin SessionOrigin;
-    public Camera ARCamera;
 
     public GameObject ObjectToPlace;
 
+    private ARSessionOrigin SessionOrigin;
     Vector3 ScreenCenter;
 
     static List<ARRaycastHit> s_Hits = new List<ARRaycastHit> ();
@@ -21,6 +21,7 @@ public class PlaceObject : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        SessionOrigin = GetComponent<ARSessionOrigin> ();
         ScreenCenter = new Vector3 (Screen.width / 2, Screen.height / 2, 0);
     }
 
@@ -45,11 +46,9 @@ public class PlaceObject : MonoBehaviour {
 
     }
 
-    [ContextMenu("place")]
+    [ContextMenu ("place")]
     private void placeObjectAtMarker () {
-        ObjectToPlace.transform.position = Marker.transform.position;
-        ObjectToPlace.transform.position = new Vector3(ObjectToPlace.transform.position.x, ObjectToPlace.transform.position.y + 0.2f, ObjectToPlace.transform.position.z);
-        ObjectToPlace.transform.rotation = Marker.transform.rotation;
+        SessionOrigin.MakeContentAppearAt(ObjectToPlace.transform, Marker.transform.position, Marker.transform.rotation);
         ObjectToPlace.SetActive (true);
         Marker.SetActive (false);
         IsObjectPlaced = true;
