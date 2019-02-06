@@ -1,37 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class RiseWater : MonoBehaviour
-{
+public class RiseWater : MonoBehaviour {
 
-    public Transform maximum;
+    public Transform boat;
     public float duration; //seconds
 
     public Transform highestPointOfMesh;
 
-    private Vector3 targetScale;
+    private Vector3 finalScale;
 
-    private float t;
-    private Vector3 startScale;
+    private Coroutine WaterRiseCoroutine;
+
+    private float acceleration = 1;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        this.startScale = transform.localScale;
+    void Start () {
+        StartCoroutine (RiseWaterWithBoat (this.duration, 3));
+    }
+
+    public void AccelerateRising(float acceleration = 20f) {
+        this.acceleration = acceleration;
+    }
+
+
+    private IEnumerator RiseWaterWithBoat (float duration, float offset) {
+
+        Vector3 startScale = transform.localScale;
 
         float distanceToHighestMesh = highestPointOfMesh.position.y - transform.position.y;
-        float distanceToMax = maximum.position.y - transform.position.y;
+        float distanceToBoat = boat.position.y - transform.position.y;
 
-        float targetScaleY = (startScale.y / distanceToHighestMesh) * distanceToMax;
+        float targetScaleY = (startScale.y / distanceToHighestMesh) * distanceToBoat;
 
-        this.targetScale = new Vector3(startScale.x, targetScaleY, startScale.z);
+        this.finalScale = new Vector3 (startScale.x, targetScaleY + offset, startScale.z);
+
+        float elapsedTime = 0;
+        while (elapsedTime < duration) {
+
+            transform.localScale = Vector3.Lerp (startScale, finalScale, (elapsedTime / duration));
+            if(this.highestPointOfMesh.position.y >= boat.position.y) {
+                boat.position = new Vector3 (boat.position.x, this.highestPointOfMesh.position.y, boat.position.z);
+            }
+
+            elapsedTime += Time.deltaTime * acceleration;
+            yield return null;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        t += Time.deltaTime / this.duration;
-        transform.localScale = Vector3.Lerp(startScale, targetScale, t);
-    }
 }
