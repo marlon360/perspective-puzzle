@@ -24,11 +24,11 @@ public class GameManager : MonoBehaviour {
     void Update () {
         if (!reachedEndGoal) {
             if (!allObstaclesCompleted) {
-                // int correctness = points[currentObstacleIndex].rightCameraPerspective ();
+                int correctness = points[currentObstacleIndex].rightCameraPerspective ();
 
-                // if (correctness < this.threshold) {
-                this.moveToNextObstacle ();
-                //}
+                if (correctness < this.threshold) {
+                    this.moveToNextObstacle ();
+                }
             } else {
                 // when player reached the endpoint
                 if (player.ReachedDestination ()) {
