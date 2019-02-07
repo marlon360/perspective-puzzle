@@ -11,7 +11,7 @@ public class PlaceObject : MonoBehaviour {
     public GameObject Marker;
 
     public GameObject ObjectToPlace;
-    public GameObject Canvas;
+    public UIManager uIManager;
 
     private ARSessionOrigin SessionOrigin;
     Vector3 ScreenCenter;
@@ -33,11 +33,14 @@ public class PlaceObject : MonoBehaviour {
                 Pose hitPose = s_Hits[0].pose;
 
                 Marker.SetActive (true);
+                uIManager.ShowPlaceObject();
+
                 Marker.transform.position = hitPose.position;
                 Quaternion rotation = Quaternion.Euler (hitPose.rotation.eulerAngles.x, 0, hitPose.rotation.eulerAngles.z);
                 Marker.transform.rotation = rotation;
             } else {
                 Marker.SetActive (false);
+                uIManager.ShowFindSurface();
             }
 
             if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
@@ -53,7 +56,7 @@ public class PlaceObject : MonoBehaviour {
         ObjectToPlace.SetActive (true);
         Marker.SetActive (false);
         IsObjectPlaced = true;
-        Canvas.SetActive(true);
+        uIManager.ShowIngameCanvas();
     }
 
     private float distanceBetweenCameraAndMarker() {

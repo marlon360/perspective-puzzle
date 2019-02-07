@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -13,15 +14,13 @@ public class GameManager : MonoBehaviour {
 
     public RiseWater riseWater;
 
+    public UIManager uiManager;
+
     private int currentObstacleIndex = 0;
     private bool allObstaclesCompleted = false;
     private bool reachedEndGoal = false;
 
     private bool started = false;
-
-    void Start () {
-        StartGame();
-    }
 
     public void StartGame () {
         riseWater.StartRisingWater ();
@@ -43,6 +42,10 @@ public class GameManager : MonoBehaviour {
         } else {
             StartGame();
         }
+    }
+
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // Update is called once per frame
@@ -73,11 +76,13 @@ public class GameManager : MonoBehaviour {
                     this.riseWater.AccelerateRising ();
                     // show message
                     playerMessage.FadeInMessage ("Danke, dass du mich gerettet hast!", 5, 6);
+
+                    uiManager.ShowVictory();
                 }
             }
 
             if (WaterIsAbovePlayer ()) {
-                Debug.Log ("Player Dead, you lost");
+                uiManager.ShowGameOver();
             }
         }
 
