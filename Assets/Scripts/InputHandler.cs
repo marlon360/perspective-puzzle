@@ -55,7 +55,7 @@ public class InputHandler : MonoBehaviour {
             }
         } else {
             // offset
-            offset = (Input.mousePosition - reference);
+            offset = -(Input.mousePosition - reference);
             // store mouse
             reference = Input.mousePosition;
         }
@@ -63,7 +63,7 @@ public class InputHandler : MonoBehaviour {
         if (isDragging) {
 
             // apply rotation
-            rotation.y = -offset.x * rotationSensitivity;
+            rotation.y = offset.x * rotationSensitivity;
             SessionOrigin.transform.Rotate(rotation);
 
             // apply translation
