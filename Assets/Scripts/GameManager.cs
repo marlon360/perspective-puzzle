@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public ObstaclePoint[] points;
-    public MoveTo player;
+    public MoveTo playerMovement;
+    public PlayerMessage playerMessage;
     public Transform endGoal;
 
     public float threshold = 50;
@@ -17,8 +18,9 @@ public class GameManager : MonoBehaviour {
     private bool reachedEndGoal = false;
 
     void Start () {
-        player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
+        playerMovement.SetDestination (points[currentObstacleIndex].waitingTransform.position);
         points[currentObstacleIndex].IsNextObstacle = true;
+        playerMessage.FadeInMessage("Bitte hilf mir zu dem Boot zu gelangen!");
     }
 
     // Update is called once per frame
@@ -32,13 +34,13 @@ public class GameManager : MonoBehaviour {
                 }
             } else {
                 // when player reached the endpoint
-                if (player.ReachedDestination ()) {
+                if (playerMovement.ReachedDestination ()) {
                     reachedEndGoal = true;
-                    player.agent.enabled = false;
-                    player.transform.parent = this.riseWater.boat;
+                    playerMovement.agent.enabled = false;
+                    playerMovement.transform.parent = this.riseWater.boat;
                     this.riseWater.AccelerateRising();
                     // show message
-                    Debug.Log("You Won");
+                    playerMessage.FadeInMessage("Danke, dass du mich gerettet hast!", 3, 4);
                 }
             }
 
@@ -50,19 +52,28 @@ public class GameManager : MonoBehaviour {
     }
 
     private bool WaterIsAbovePlayer() {
-        return riseWater.highestPointOfMesh.position.y > player.transform.position.y + (player.agent.height / 2);
+        return riseWater.highestPointOfMesh.position.y > playerMovement.transform.position.y + (playerMovement.agent.height / 2);
     }
 
     private void moveToNextObstacle () {
         points[currentObstacleIndex].IsDone = true;
         currentObstacleIndex++;
         if (currentObstacleIndex < points.Length) {
-            player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
+            playerMovement.SetDestination (points[currentObstacleIndex].waitingTransform.position);
             points[currentObstacleIndex].IsNextObstacle = true;
         } else {
             allObstaclesCompleted = true;
-            player.SetDestination (endGoal.position);
+            playerMovement.SetDestination (endGoal.position);
         }
+
+        if(currentObstacleIndex == 1) {
+            playerMessage.FadeOutMessage();
+        }
+
+        if(currentObstacleIndex == 3) {
+            playerMessage.FadeInOutMessage("Wir haben es fast geschafft!");
+        }
+
     }
 
 }
