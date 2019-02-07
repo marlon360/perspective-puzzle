@@ -1119,7 +1119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201911229}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.52, y: 0.1625, z: 0.3073}
+  m_LocalPosition: {x: 5.313, y: 0.1625, z: 0.3073}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 327197162}
@@ -2867,7 +2867,7 @@ MonoBehaviour:
     breit, er will nur noch nach Hause.\nPete f\xE4llt auf, dass der Meeresspiegel
     immer weiter steigt. Er muss sich irgendwie vor dem Wasser retten. Er erkennt
     ein Boot und muss es erreichen bevor er ertrinkt.\nDoch leider liegen auf seinem
-    Weg viele t\xF6dliche Schluchten und Krater..\nHilf Pete sich vor dem Ertrinken
+    Weg viele t\xF6dliche Schluchten und Krater...\nHilf Pete sich vor dem Ertrinken
     zu retten und steuere ihn sicher zum Boot.\nJede Schlucht l\xE4sst sich \xFCberwinden,
     auf die Perspektive kommt es an!"
 --- !u!222 &585248198
@@ -4692,7 +4692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4279953838617418, guid: 37c153faa1488854e9075c6186a4afa1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 4.81
       objectReference: {fileID: 0}
     - target: {fileID: 4279953838617418, guid: 37c153faa1488854e9075c6186a4afa1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6972,7 +6972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4990536518490598, guid: 1cf43f38d1324ad4aa7ae33fa1832d80, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.07
+      value: 4.81
       objectReference: {fileID: 0}
     - target: {fileID: 4990536518490598, guid: 1cf43f38d1324ad4aa7ae33fa1832d80, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10152,7 +10152,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949437443}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5154, y: 0.1624, z: -0.298}
+  m_LocalPosition: {x: 5.32, y: 0.1624, z: -0.298}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 327197162}
@@ -10778,7 +10778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4115883830180220, guid: 72b80820a841c1e47909d65b08403466, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.664
+      value: 5.474
       objectReference: {fileID: 0}
     - target: {fileID: 4115883830180220, guid: 72b80820a841c1e47909d65b08403466, type: 3}
       propertyPath: m_LocalPosition.y
