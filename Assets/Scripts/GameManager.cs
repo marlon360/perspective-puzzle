@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
         player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
+        points[currentObstacleIndex].IsNextObstacle = true;
     }
 
     // Update is called once per frame
@@ -53,9 +54,11 @@ public class GameManager : MonoBehaviour {
     }
 
     private void moveToNextObstacle () {
+        points[currentObstacleIndex].IsDone = true;
         currentObstacleIndex++;
         if (currentObstacleIndex < points.Length) {
             player.SetDestination (points[currentObstacleIndex].waitingTransform.position);
+            points[currentObstacleIndex].IsNextObstacle = true;
         } else {
             allObstaclesCompleted = true;
             player.SetDestination (endGoal.position);

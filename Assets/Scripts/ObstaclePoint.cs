@@ -13,6 +13,10 @@ public class ObstaclePoint : MonoBehaviour {
     public Transform visibleStartPoint;
     public Transform visibleEndPoint;
 
+    [HideInInspector]
+    public bool IsNextObstacle = false;
+    public bool IsDone = false;
+
     private Camera cam;
 
     private void Start() {
