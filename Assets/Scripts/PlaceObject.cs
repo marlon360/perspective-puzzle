@@ -48,10 +48,14 @@ public class PlaceObject : MonoBehaviour {
 
     [ContextMenu ("place")]
     private void placeObjectAtMarker () {
-        SessionOrigin.MakeContentAppearAt(ObjectToPlace.transform, Marker.transform.position + new Vector3(0,0.5f,0), Marker.transform.rotation);
+        SessionOrigin.MakeContentAppearAt(ObjectToPlace.transform, Marker.transform.position + new Vector3(0,distanceBetweenCameraAndMarker() * 0.75f,0), Marker.transform.rotation);
         ObjectToPlace.SetActive (true);
         Marker.SetActive (false);
         IsObjectPlaced = true;
+    }
+
+    private float distanceBetweenCameraAndMarker() {
+        return SessionOrigin.camera.transform.position.y - Marker.transform.position.y;
     }
 
 }
