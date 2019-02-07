@@ -27,20 +27,30 @@ public class GameManager : MonoBehaviour {
     void Update () {
         if (!reachedEndGoal) {
             if (!allObstaclesCompleted) {
-                int correctness = points[currentObstacleIndex].rightCameraPerspective ();
-
-                if (correctness < this.threshold) {
-                    this.moveToNextObstacle ();
+                // when player reached waiting position
+                if(playerMovement.ReachedDestination()) {
+                    // mark next obstacle
+                    points[currentObstacleIndex].IsNextObstacle = true;
+                    // test correctness
+                    int correctness = points[currentObstacleIndex].rightCameraPerspective ();
+                    // if threshold reached move to next obstacle
+                    if (correctness < this.threshold) {
+                        this.moveToNextObstacle ();
+                    }
                 }
             } else {
                 // when player reached the endpoint
                 if (playerMovement.ReachedDestination ()) {
+                    // set flag
                     reachedEndGoal = true;
+                    // disable agent to move with boat
                     playerMovement.agent.enabled = false;
+                    // set boat as parent to move player with boat
                     playerMovement.transform.parent = this.riseWater.boat;
+                    // rise water to boat
                     this.riseWater.AccelerateRising();
                     // show message
-                    playerMessage.FadeInMessage("Danke, dass du mich gerettet hast!", 3, 4);
+                    playerMessage.FadeInMessage("Danke, dass du mich gerettet hast!", 5, 6);
                 }
             }
 
@@ -60,7 +70,6 @@ public class GameManager : MonoBehaviour {
         currentObstacleIndex++;
         if (currentObstacleIndex < points.Length) {
             playerMovement.SetDestination (points[currentObstacleIndex].waitingTransform.position);
-            points[currentObstacleIndex].IsNextObstacle = true;
         } else {
             allObstaclesCompleted = true;
             playerMovement.SetDestination (endGoal.position);
