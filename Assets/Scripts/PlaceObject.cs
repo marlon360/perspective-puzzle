@@ -11,6 +11,7 @@ public class PlaceObject : MonoBehaviour {
     public GameObject Marker;
 
     public GameObject ObjectToPlace;
+    public GameObject Canvas;
 
     private ARSessionOrigin SessionOrigin;
     Vector3 ScreenCenter;
@@ -52,6 +53,7 @@ public class PlaceObject : MonoBehaviour {
         ObjectToPlace.SetActive (true);
         Marker.SetActive (false);
         IsObjectPlaced = true;
+        Canvas.SetActive(true);
     }
 
     private float distanceBetweenCameraAndMarker() {

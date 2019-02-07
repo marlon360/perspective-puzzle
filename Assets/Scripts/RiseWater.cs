@@ -16,9 +16,18 @@ public class RiseWater : MonoBehaviour {
 
     private float acceleration = 1;
 
-    // Start is called before the first frame update
-    void Start () {
+    private bool isPaused = false;
+
+    public void StartRisingWater() {
         StartCoroutine (RiseWaterWithBoat (this.duration, 3));
+    }
+
+    public void PauseRisingWater() {
+        isPaused = true;
+    }
+
+    public void ContinueRisingWater() {
+        isPaused = false;
     }
 
     public void AccelerateRising(float acceleration = 20f) {
@@ -44,8 +53,9 @@ public class RiseWater : MonoBehaviour {
             if(this.highestPointOfMesh.position.y >= boat.position.y) {
                 boat.position = new Vector3 (boat.position.x, this.highestPointOfMesh.position.y, boat.position.z);
             }
-
-            elapsedTime += Time.deltaTime * acceleration;
+            if(!isPaused) {
+                elapsedTime += Time.deltaTime * acceleration;
+            }
             yield return null;
         }
     }

@@ -17,10 +17,32 @@ public class GameManager : MonoBehaviour {
     private bool allObstaclesCompleted = false;
     private bool reachedEndGoal = false;
 
+    private bool started = false;
+
     void Start () {
+        StartGame();
+    }
+
+    public void StartGame () {
+        riseWater.StartRisingWater ();
         playerMovement.SetDestination (points[currentObstacleIndex].waitingTransform.position);
         points[currentObstacleIndex].IsNextObstacle = true;
-        playerMessage.FadeInMessage("Bitte hilf mir zu dem Boot zu gelangen!");
+        playerMessage.FadeInMessage ("Bitte hilf mir zu dem Boot zu gelangen!");
+        started = true;
+    }
+
+    public void PauseGame() {
+        riseWater.PauseRisingWater();
+        playerMovement.agent.isStopped = true;
+    }
+    
+    public void ContinueGame() {
+        if(started) {
+            riseWater.ContinueRisingWater();
+            playerMovement.agent.isStopped = false;
+        } else {
+            StartGame();
+        }
     }
 
     // Update is called once per frame
@@ -28,7 +50,7 @@ public class GameManager : MonoBehaviour {
         if (!reachedEndGoal) {
             if (!allObstaclesCompleted) {
                 // when player reached waiting position
-                if(playerMovement.ReachedDestination()) {
+                if (playerMovement.ReachedDestination ()) {
                     // mark next obstacle
                     points[currentObstacleIndex].IsNextObstacle = true;
                     // test correctness
@@ -48,20 +70,20 @@ public class GameManager : MonoBehaviour {
                     // set boat as parent to move player with boat
                     playerMovement.transform.parent = this.riseWater.boat;
                     // rise water to boat
-                    this.riseWater.AccelerateRising();
+                    this.riseWater.AccelerateRising ();
                     // show message
-                    playerMessage.FadeInMessage("Danke, dass du mich gerettet hast!", 5, 6);
+                    playerMessage.FadeInMessage ("Danke, dass du mich gerettet hast!", 5, 6);
                 }
             }
 
-            if(WaterIsAbovePlayer()) {
-                Debug.Log("Player Dead, you lost");
+            if (WaterIsAbovePlayer ()) {
+                Debug.Log ("Player Dead, you lost");
             }
         }
 
     }
 
-    private bool WaterIsAbovePlayer() {
+    private bool WaterIsAbovePlayer () {
         return riseWater.highestPointOfMesh.position.y > playerMovement.transform.position.y + (playerMovement.agent.height / 2);
     }
 
@@ -75,12 +97,12 @@ public class GameManager : MonoBehaviour {
             playerMovement.SetDestination (endGoal.position);
         }
 
-        if(currentObstacleIndex == 1) {
-            playerMessage.FadeOutMessage();
+        if (currentObstacleIndex == 1) {
+            playerMessage.FadeOutMessage ();
         }
 
-        if(currentObstacleIndex == 3) {
-            playerMessage.FadeInOutMessage("Wir haben es fast geschafft!");
+        if (currentObstacleIndex == 3) {
+            playerMessage.FadeInOutMessage ("Wir haben es fast geschafft!");
         }
 
     }
