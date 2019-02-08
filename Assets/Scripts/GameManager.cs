@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private bool WaterIsAbovePlayer () {
-        return riseWater.highestPointOfMesh.position.y > playerMovement.transform.position.y + (playerMovement.agent.height / 2);
+        return riseWater.WaterHighestPoint().y > playerMovement.transform.position.y + (playerMovement.agent.height / 2);
     }
 
     private void moveToNextObstacle () {

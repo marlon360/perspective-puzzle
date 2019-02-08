@@ -13,6 +13,7 @@ public class Rotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // constantly rotate object
         transform.Rotate(0,0,0.2f);
     }
 }
