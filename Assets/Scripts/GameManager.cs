@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour {
 
     public void PauseGame() {
         riseWater.PauseRisingWater();
-        playerMovement.agent.isStopped = true;
+        playerMovement.StopMoving();
     }
     
     public void ContinueGame() {
         if(started) {
             riseWater.ContinueRisingWater();
-            playerMovement.agent.isStopped = false;
+            playerMovement.ContinueMoving();
         } else {
             StartGame();
         }
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour {
                     // set flag
                     reachedEndGoal = true;
                     // disable agent to move with boat
-                    playerMovement.agent.enabled = false;
+                    playerMovement.DisableAgent();
                     // set boat as parent to move player with boat
                     playerMovement.transform.parent = this.riseWater.boat;
                     // rise water to boat

@@ -5,18 +5,21 @@ using UnityEngine.AI;
 
 public class MoveTo : MonoBehaviour {
 
+    [HideInInspector]
     public NavMeshAgent agent;
+    
     private Animator anim;
 
     void Start () {
         this.agent = GetComponent<NavMeshAgent> ();
         this.anim = GetComponent<Animator> ();
+        // set to grounded
         this.anim.SetBool ("Grounded", true);
     }
 
     void Update () {
+        // update speed in animator with agent speed
         this.anim.SetFloat ("MoveSpeed", this.agent.velocity.magnitude / this.agent.speed / 1.6f);
-
     }
 
     public void SetDestination (Vector3 destination) {
@@ -35,6 +38,18 @@ public class MoveTo : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    public void StopMoving() {
+        this.agent.isStopped = true;
+    }
+
+    public void ContinueMoving() {
+        this.agent.isStopped = false;
+    }
+
+    public void DisableAgent() {
+        this.agent.enabled = false;
     }
 
 }
