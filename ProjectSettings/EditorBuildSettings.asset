@@ -11,4 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: dbb7358ef339e4fedba95e6884b9ecb1
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 903ffc8fda14f42acbcfb88489b7456d,
+      type: 2}
