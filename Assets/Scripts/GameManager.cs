@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour {
 
             if (WaterIsAbovePlayer ()) {
                 uiManager.ShowGameOver();
+                playerMovement.StopMoving();
             }
         }
 
